@@ -1,0 +1,54 @@
+{% extends 'stu_dash.html' %}
+{% load static %}
+{% block head %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/cards.css' %}">
+{% endblock %}
+{% block body %}
+<section class="content container-fluid">
+          <!--------------------------
+        | Your Page Content Here |
+        -------------------------->
+<div class="container-fluid">
+            <main>
+                <div class="dashboard-container">
+
+                    <div class="card-4">
+                        <h4 class="chart-lbl">
+                            User Registrations
+                        </h4>
+                        <div class="divider">
+                        </div>
+                        <div class="line-chart-container">
+                            <canvas class="line-chart" id="line">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+<script>
+//line chart
+var line = document.getElementById('line');
+line.height = 200
+var lineConfig = new Chart(line, {
+    type: 'line',
+    data: {
+        labels: ["Jan","Feb"],
+        datasets: [{
+            label: '# of data', // Name the series
+            data: {{data|safe}}, // Specify the data values array
+            fill: false,
+            borderColor: '#2196f3', // Add custom color border (Line)
+            backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+            borderWidth: 1 // Specify bar border width
+        }]
+    },
+    options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+    }
+})
+</script>
+{% endblock %}

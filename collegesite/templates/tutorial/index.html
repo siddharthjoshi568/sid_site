@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <title>OES</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,500,600,700,700i|Montserrat:300,400,500,600,700" rel="stylesheet">
+
+  <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Bootstrap CSS File -->
+  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Libraries CSS Files -->
+  <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+  <!-- Main Stylesheet File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+
+</head>
+
+<div>
+  <!--==========================
+  Header
+  ============================-->
+  <header id="header">
+
+    <div id="topbar">
+      <div class="container">
+        <div class="social-links">
+          <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+          <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+          <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+          <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+
+      <div class="logo float-left">
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <h1 class="text-light"><a href="#intro" class="scrollto"><span><b>LMS</b></span></a></h1>
+        <!-- <a href="#header" class="scrollto"><img src="img/logo.png" alt="" class="img-fluid"></a> -->
+      </div>
+
+        <nav class="main-nav float-right d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="{% url 'tutorial:index' %}">Home</a></li>
+		  <li><a href="{% url 'tutorial:tutorial' %}">Tutorial</a></li>
+          {% if request.user.is_authenticated %}
+          <li><a href="{% url 'oes:index' %}">Exam</a></li>
+          {% endif %}
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#footer">Contact Us</a></li>
+
+         {% if request.user.is_authenticated %}
+          <li class="drop-down"><a><img src="{{request.user.student_model.image.url}}"  width="30px" height="30px" alt="User" style="border-radius:100%;"></a>
+            <ul>
+              <li><a href="{% url 'tutorial:profile' %}">My Profile</a></li>
+              <li><a href="{% url 'tutorial:logout_request' %}">Logout</a></li>
+            </ul>
+          </li>
+
+         {% else %}
+         <li><a data-toggle="modal" data-target="#myModal" href="#">Login/Register</a></li>
+         {% endif %}
+
+        </ul>
+      </nav><!-- .main-nav -->
+    </div>
+  </header><!-- #header -->
+  <!--==========================
+    Login/Register Modal Section
+  ============================-->
+<div id="myModal" class="modal fade loginM" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                        <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link active" data-toggle="tab" href="#home">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" data-toggle="tab" href="#menu1">Register</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" data-toggle="tab" href="#menu2">Faculty</a>
+                                </li>
+                        </ul>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                        <div class="tab-content">
+                            <div id="home" class="container tab-pane active">
+                                <form class='login-form' style="max-width:400px;">
+                                        <div class="form-group">
+                                          <label for="username">Username</label>
+                                          <input type="email" class="form-control" id="username" placeholder="Username">
+                                          <small class="form-text text-muted">Enter your Username</small>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label for="password">Password</label>
+                                          <input type="password" name="password" class="form-control" id="password" placeholder="Password" />
+                                          <div id="errorlogin" style="color:red"></div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary btn-lg btn-block login-btn" onclick="login()">Login</button>
+                                        <small class="float-right text-muted"><a class="text-dark" href="{% url 'tutorial:password_reset' %}">Forgot Password ? Click Here.</a></small>
+                                </form>
+                            </div>
+                                <div id="menu1" class="container tab-pane">
+                                <form class='login-form' style="max-width:400px;">
+                                        <div class="form-group">
+                                        <div id="errorusername1" style="color:red">
+                                        </div>
+                                          <label for="username1">Username</label>
+                                          <input type="text" class="form-control" id="username1" placeholder="Enter Username">
+                                        </div>
+                                        <div class="form-group">
+                                        <div id="errorname" style="color:red">
+                                        </div>
+                                          <label for="name">Name</label>
+                                          <input type="text" class="form-control" id="name" placeholder="Enter Your Full Name">
+                                        </div>
+
+                                        <div class="form-group">
+                                        <div id="erroremail" style="color:red">
+                                        </div>
+                                          <label for="email">Email</label>
+                                          <input type="text" class="form-control" id="email" placeholder="Enter Your Email ID">
+                                        </div>
+                                      <button type="button"  class="btn btn-primary login-btn mb-2 mt-2" onclick="sendotp()">Send Otp</button>
+
+                                      <div class="form-group">
+                                        <div id="errorotp" style="color:red">
+                                        </div>
+                                          <label for="otp">Enter OTP sent to your gmail address..</label>
+                                          <input type="text" class="form-control" id="otp" placeholder="Enter OTP">
+                                      </div>
+
+                                        <div class="form-group">
+                                        <div id="errorcomputercode" style="color:red">
+                                        </div>
+                                          <label for="computer_code">Computer Code</label>
+                                          <input type="number" class="form-control" id="computer_code" placeholder="Enter Computer Code">
+                                        </div>
+
+                                        <div class="form-group">
+                                        <div id="errorcourse" style="color:red">
+                                        </div>
+                                          <label for="name">Course</label>
+                                          <!--<input type="text" class="form-control" id="name" placeholder="Enter Your Course">-->
+                                          <select id="mySelect">
+                                            <option value="BCA">BCA</option>
+                                            <option value="MCA">MCA</option>
+                                            <option value="IMCA">IMCA</option>
+                                          </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                        <div id="errorpass" style="color:red">
+                                        </div>
+                                          <label for="password1">Create Password</label>
+                                          <input type="password" class="form-control" id="password1" placeholder="Password" />
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label for="password2">Confirm Password</label>
+                                          <input type="password" class="form-control" id="password2" placeholder="Password" />
+                                        </div>
+                                        {% csrf_token %}
+                                        <button type="button"  class="btn btn-primary btn-lg btn-block login-btn mb-2 mt-2" onclick="signup()">Sign up</button>
+                                      </form>
+                            </div>
+
+                            <div id="menu2" class="container tab-pane">
+                                <form class='login-form' style="max-width:400px;">
+                                      <h4 align="center"><b>Faculty Login</b></h4>
+                                      <div class="form-group">
+                                          <label for="fusername">Username</label>
+                                          <input type="email" class="form-control" id="fusername" placeholder="Username">
+                                          <small class="form-text text-muted">Enter your Username</small>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label for="fpassword">Password</label>
+                                          <input type="password" name="fpassword" class="form-control" id="fpassword" placeholder="Password" />
+                                          <div id="ferrorlogin" style="color:red"></div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary btn-lg btn-block login-btn" onclick="flogin()">Login</button>
+                                      </form>
+                            </div>
+
+                            </div>
+                          </div>
+                </div>
+              </div>
+            </div>
+    </div>
+  <!--==========================
+    Intro Section
+  ============================-->
+  <section id="intro" class="clearfix">
+    <div class="container d-flex h-100">
+      <div class="row justify-content-center align-self-center">
+        <div class="col-md-6 intro-info order-md-first order-last">
+          <h2>LMS  for<br>Your <span>Success!</span></h2>
+          {% if not request.user.is_authenticated %}
+          <div>
+            <a href="#" data-toggle="modal" data-target="#myModal" class="btn-get-started scrollto">Get Started</a>
+          </div>
+          {% endif %}<br>
+        </div>
+        <div class="col-md-6 intro-img order-md-last order-first">
+          <img src="{% static 'img/intro-img.svg' %}" alt="" class="img-fluid">
+        </div>
+      </div>
+    </div>
+  </section><!-- #intro -->
+
+  <main id="main">
+  <!--==========================
+      Tutorials Section
+    ============================-->
+    <section id="services" class="section-bg">
+      <div class="container">
+        <header class="section-header">
+          <h3>Tutorials</h3>
+        </header>
+        <div class="row">
+          {% for i in j %}
+          <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-duration="1.4s">
+            <div class="box">
+              <div><img src="{{i.image.url}}" style="height:150px;width:150px;border-radius:50%;"></div>
+              <br>
+              <h4 class="title"><a href="">{{i.topic}}</a></h4>
+              {% if i.description %}<p class="description">{{i.description}}</p>{% endif %}
+			  <div style="align:center; padding-left:50px;">
+                <a href="{% url 'tutorial:tutorial' %}">
+			  	<button class="button button--tamaya button--border-thick" data-text="Learn"><span>Learn</span></button>
+                 </a>
+			  </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section><!-- #services -->
+    <!--==========================
+      About Us Section
+    ============================-->
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 col-md-6">
+            <div class="about-img">
+              <img src="{% static 'img/soc.jpg' %}" alt="">
+            </div>
+            <div class="about-img">
+              <img src="{% static 'img/soc1.jpg' %}" alt="">
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-6">
+            <div class="about-content">
+              <h2>About Us</h2>
+              <p>School of Computer Science was established in the year 1995 with a three-year full-time course in Bachelor of Computer Applications course affiliated to DAVV Indore (MP). The college is among the top ten BCA colleges in the state, situated in the educational hub (i.e. Indore ) of MP state. In recent years, there has been an increasing demand for BCA graduates from all corners of India. On account of rapid growth in the industry & services sector, the employment opportunities for young graduates who have undertaken computer education are bright. The persons already employed are also aspiring for BCA education to make growth in their career in terms of higher responsibilities and monetary benefits. Current Business schools give apt training & education to students to take challenges of multitasking in a competitive environment. This has created a huge demand for computer studies and technical knowledge is essential to ensure that quality and professional benefits are accrued from the degree courses. The School of Computers is acclaimed as the best MCA college in Indore.</p>
+              <h3>Misson</h3>
+              <p>To create professional and technologically enabled manpower for meeting the current and future demands of the industry and society. To foster research and development culture in close interaction with the computing and technology industry, promoting synergistic partnerships with the industry.</p>
+              <h3>Vission</h3>
+              <p>SOC IPS Academy aims to be one of the premier institutions of the country, dedicated to the creation, application, dissemination of knowledge, skills, spirit of competitive excellence, building up computing knowledge and skills as an essential component for futuristic work management.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section><!-- #about -->
+    <!--==========================
+      Why Us Section
+    ============================-->
+    <section id="why-us" class="wow fadeIn">
+      <div class="container-fluid">
+        
+        <header class="section-header">
+          <h3>Why LMS ?</h3>
+          <p>LMS and OES for your success.</p>
+        </header>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="why-us-img">
+              <img src="{% static 'img/soc.jpg' %}" alt="" class="img-fluid">
+            </div><br>
+            <div class="why-us-img">
+              <img src="{% static 'img/soc1.jpg' %}" alt="" class="img-fluid">
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="why-us-content">
+              <p>Students of  School of computers, represented India in Asiatic Robotics Competition- Robotex Asia  19 (the biggest robotics festival on the planet) at Shanghai China and secured first position. They were also awarded best performance award in entrepreneurship category .
+Students of School of Computers won international championship ROBOTEX 2019 in entrepreneur category and got best innovative idea award in December 2019 at Tallinn Estonia Europe.
+School of Computers have been selected in AICTE central and western region and qualified for the prestigious "Chhatra Vishwakarma Award". For this they were invited for National convention that was held at New Delhi.
+School of Computers, IPS Academy is nominated for Remote center for upcoming FDPs under the E & ICT Academy, NIT PATNA.
+              </p>
+              <div class="features wow bounceInUp clearfix">
+                <i class="fa fa-diamond" style="color: #f058dc;"></i>
+                <h4>Placements</h4>
+                <p>Recruitment by premier companies across BFSI, IT/ITES, Digital, E- commerce, FMCG, Product, Automotive, Engineering and others.
+                Large number of offers by premier establishment likes Deloitte, Tata Consultancy Services (TCS), Intel, IBM, Wipro, Infosys, etc.
+                More than 70% of students pursue their internship in various companies every year.
+                Students also get training for the Placement Orientations for future scope.</p>
+              </div>
+              <div class="features wow bounceInUp clearfix">
+                <i class="fa fa-object-group" style="color: #ffb774;"></i>
+                <h4>Facilities</h4>
+                <p>IPS Academy is one of the best colleges in Indore for Computer Application courses. In addition to the degree education other facilities are also available for the benefit of the students and the faculties:
+SOC premises has free wi-fi facility enabled for students and faculties.
+SOC has an established Artificial Intelligence lab for students.
+SOC is an NPTEL Local Chapter which benefits the students and even faculty members to enroll in various online courses.
+SOC has all classrooms equipped with AV projectors.</p>
+              </div>
+              <div class="features wow bounceInUp clearfix">
+                <i class="fa fa-language" style="color: #589af1;"></i>
+                <h4>Facilities</h4>
+                <p>IPS Academy is one of the best colleges in Indore for Computer Application courses. In addition to the degree education other facilities are also available for the benefit of the students and the faculties:
+SOC premises has free wi-fi facility enabled for students and faculties.
+SOC has an established Artificial Intelligence lab for students.
+SOC is an NPTEL Local Chapter which benefits the students and even faculty members to enroll in various online courses.
+SOC has all classrooms equipped with AV projectors.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row counters">
+          <div class="col-lg-3 col-6 text-center">
+            <span data-toggle="counter-up">874</span>
+            <p>Students</p>
+          </div>
+          <div class="col-lg-3 col-6 text-center">
+            <span data-toggle="counter-up">92</span>
+            <p>Faculties</p>
+          </div>
+          <div class="col-lg-3 col-6 text-center">
+            <span data-toggle="counter-up">27</span>
+            <p>Tutorials</p>
+          </div>
+          <div class="col-lg-3 col-6 text-center">
+            <span data-toggle="counter-up">9</span>
+            <p>Exams</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    </section>
+
+  <!--==========================
+    Footer
+  ============================-->
+  <footer id="footer" class="section-bg">
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-6">
+
+            <div class="row">
+
+                <div class="col-sm-6">
+
+                  <div class="footer-info">
+                    <h3>LMS</h3>
+                    <h4>Contact Person. : -<br> Mr. Rohit Kumar Vyas</h4>
+                    <p>Mob. No. : -  8085224628 , 9926999161</p>
+                    <p>Email Id: admission.soc@ipsacademy.org</p>
+                    <br>
+                    <h4>Discipline and Anti Ragging Committee:
+                    <br>Incharge : - Dr.Bharat Singh</h4>
+                    <p>Mob. No. : - 98260 67207</p>
+                    <p>Email Id: - bharatsingh@ipsacademy.org</p>
+                    <br>
+                    <h4>Women's Grievance Cell :
+                    <br>Head : - Ms. Naziya Hussain</h4>
+                    <p>Phone No.-0731- 4014858</p>
+                    <p>Email Id : - naziyahussain@ipsacademy.org</p>
+                  </div>
+
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                      <li><a href="#">Home</a></li>
+                      <li><a href="#">Tutorials</a></li>
+                      {% if request.user.is_authenticated %}
+                      <li><a href="#">Exam</a></li>
+                      {% endif %}
+                      <li><a href="#">About Us</a></li>
+                      <li><a href="#">Privacy policy</a></li>
+                    </ul>
+                  </div>
+
+                  <div class="footer-links">
+                    <h4>Contact Us</h4>
+                    <p>
+                      Address: IPS Academy, A.B Road, Rajendra Nagar, Indore, <br>
+                      Madhya Pradesh 452001<br>
+                      India <br>
+
+                      <strong>Email:</strong> office.soc@ipsacademy.org<br>
+                      <strong>Phone:</strong> +0731-4014858 , 859<br>
+                    </p>
+                  </div>
+
+                  <div class="social-links">
+                    <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+                    <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                  </div>
+
+                </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-6">
+
+            <div class="form">
+
+              <h4>Send us a message</h4>
+              <p>For more information contact us.</p>
+              <form action="" method="post" role="form" class="contactForm">
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                  <div class="validation"></div>
+                </div>
+                <!--<div class="form-group">
+                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                  <div class="validation"></div>
+                </div>-->
+                <div class="form-group">
+                  <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                  <div class="validation"></div>
+                </div>
+
+                <div id="sendmessage">Your message has been sent. Thank you!</div>
+                <div id="errormessage"></div>
+
+                <div class="text-center"><button type="submit" title="Send Message">Send Message</button></div>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+	  
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong>LMS</strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#">Siddharth Joshi</a>
+      </div>
+    </div>
+    </div>
+
+	<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+  <!-- Uncomment below i you want to use a preloader -->
+  <!-- <div id="preloader"></div> -->
+
+  <!-- JavaScript Libraries -->
+  <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'lib/jquery/jquery-migrate.min.js' %}"></script>
+  <script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+  <script src="{% static 'lib/mobile-nav/mobile-nav.js' %}"></script>
+  <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+  <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+  <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'lib/isotope/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'lib/lightbox/js/lightbox.min.js' %}"></script>
+  <!-- Contact Form JavaScript File -->
+  <script src="{% static 'contactform/contactform.js' %}"></script>
+
+  <!-- Template Main Javascript File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+	
+  </footer><!-- #footer -->
+
+<script>
+
+function login(){
+        username = document.getElementById("username").value;
+        password = document.getElementById("password").value;
+        csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        $("#errorlogin").html("");
+        $.ajax({
+            type:"POST",
+            url:'/loginpage/',
+            data:{
+                'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                'username':username,
+                'password':password,
+            },
+            success : function(data){
+                console.log(data);
+                if(data['message'] == "Success"){
+                    location.reload();
+                }
+                else if(data['message'] == "inactive"){
+                    $("#errorlogin").html("Please verify this E-mail address.");
+                }
+                else{
+                    $("#errorlogin").html("The E-mail and Password do not match.");
+                }
+            }
+        });
+    }
+
+
+
+    function sendotp(){
+            email = document.getElementById("email").value;
+            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+            $.ajax({
+            type:"GET",
+            url:'{% url 'tutorial:register' %}',
+            data:{
+              'csrfmiddlewaretoken': csrfmiddlewaretoken,
+              'email':email,
+            },
+            success : function(data){
+                console.log(data['message']);
+                if(data['message'] == "Success"){
+                    //location.reload();
+                    console.log("Success");
+                }
+                else{
+                    if("username" in data['message'])
+                        $("#errorotp").html(data['message']['otp'][0]);
+                }
+            }
+        })
+
+      }
+
+
+
+
+
+   function signup(){
+            username = document.getElementById("username1").value;
+            name = document.getElementById("name").value;
+            email = document.getElementById("email").value;
+            otp = document.getElementById("otp").value;
+            computer_code = document.getElementById("computer_code").value;
+
+            var x = document.getElementById("mySelect").selectedIndex;
+            var course = document.getElementsByTagName("option")[x].value;
+
+            password1 = document.getElementById("password1").value;
+            password2 = document.getElementById("password2").value;
+            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            $("#errorusername1").html("");
+            $("#errorpass").html("");
+            $("#errorcomputercode").html("");
+            $("#errorname").html("");
+            $("#erroremail").html("");
+            $("#errorotp").html("");
+
+            $.ajax({
+            type:"POST",
+            url:'{% url 'tutorial:register' %}',
+            data:{
+              'csrfmiddlewaretoken': csrfmiddlewaretoken,
+              'username':username,
+              'name':name,
+              'email':email,
+              'otp':otp,
+              'computer_code':computer_code,
+              'course':course,
+              'password1':password1,
+              'password2':password2,
+            },
+            success : function(data){
+                console.log(data['message']);
+                if(data['message'] == "Success"){
+                    location.reload();
+                }
+                else{
+                    if("username" in data['message'])
+                        $("#errorusername1").html(data['message']['username'][0]);
+                    if("password2" in data['message'])
+                        $("#errorpass").html(data['message']['password2'][0]);
+                    if("computer_code" in data['message'])
+                        $("#errorcomputercode").html(data['message']['computer_code'][0]);
+                }
+            }
+        })
+
+      }
+
+    function flogin(){
+        fusername = document.getElementById("fusername").value;
+        fpassword = document.getElementById("fpassword").value;
+        csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        $("#ferrorlogin").html("");
+        $.ajax({
+            type:"POST",
+            url:'/login_faculty/',
+            data:{
+                'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                'username':fusername,
+                'password':fpassword,
+            },
+            dataType: "json",
+            success : function(data){
+                console.log(data);
+                if(data['message'] == "Success"){
+                    window.location.href = 'oes/faculty_dashboard';
+                }
+                else if(data['message'] == "inactive"){
+                    $("#errorlogin").html("Please verify this E-mail address.");
+                }
+                else{
+                    $("#errorlogin").html("The E-mail and Password do not match.");
+                }
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

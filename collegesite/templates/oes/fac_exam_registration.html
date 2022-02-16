@@ -1,0 +1,67 @@
+{% extends 'faculty_dashboard_base.html' %}
+
+{% block head %}
+<style>
+.alert {
+   height:50px;
+}
+</style>
+{% endblock %}
+{% block body %}
+<section class="container-fluid">
+
+      <!--------------------------
+        | Your Page Content Here |
+        -------------------------->
+
+        {% if not message == "" %}
+            <div class="alert alert-success" role="alert">
+              <p align="center"><b>{{message}}</b></p>
+            </div>
+        {% endif %}
+
+        <table id="example" class="table table-striped table-bordered nowrap" style="width:100%">
+
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>Name</th>
+              <th>Examination</th>
+              <th>Course</th>
+              <th>Semester</th>
+              <th>Date</th>
+              <th>Attempt no.</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in reg %}
+            {% if i.answered == 0 and i.registered == 0%}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.user_id.username}}</td>
+                <td>{{i.exam_id.exam_name}}</td>
+                <td>{{ i.exam_id.course_id.course_name }}</td>
+                <td>{{ i.exam_id.semester }}</td>
+                <td>{{ i.exam_id.start_time }}</td>
+                <td>{{ i.attempt_no }}</td>
+                <td>
+                    <form action="{% url 'oes:fac_exam_registration' %}" method="POST">
+                        <input type="hidden" name="reg_id" value="{{i.id}}">
+                        <input type="hidden" name="exam_id" value="{{i.exam_id.id}}">
+                        {% csrf_token %}
+                        <button class="btn btn-xs btn-primary" type="submit">
+                            <i class="fa fa-edit"></i>Approve</button>
+                    </form>
+                </td>
+                {% endif %}
+              </tr>
+            {% endfor %}
+
+            </tbody>
+          </table>
+            {% if reg_count == 0 %}
+                <h5 align="center">No Registrations !</h5>
+            {% endif %}
+    </section>
+{% endblock %}

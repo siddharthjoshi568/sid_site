@@ -1,0 +1,616 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        max-height: 614px;
+    }
+
+    .commentContainer {
+        overflow-x: auto;
+    }
+</style>
+<style>
+    .content-holder {
+        list-style: none;
+        padding: 0;
+    }
+
+
+    .content-holder a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .content-holder li:hover {
+        background-color: rgb(239, 239, 240)
+    }
+
+    .content-holder-item {
+        padding: 23px 12px;
+        font-size: 16px;
+    }
+
+    .bg-black {
+        background-color: black;
+    }
+
+    #video-box {
+        /* overflow-y: scroll; */
+    }
+
+    #content-box {
+        max-height: 85vh;
+        overflow-y: scroll;
+
+    }
+
+    #course-content-box {
+        align-self: flex-start;
+        height: 20px;
+        position: sticky;
+        top: 0;
+    }
+
+    .bg-lgrey {
+        background-color: rgb(231, 231, 233);
+    }
+</style>
+
+<style>
+    .tab-pane {
+        min-height: 344px;
+    }
+
+    .nav-link {
+        font-weight: bold;
+        color: black
+    }
+</style>
+
+<style>
+    .commentReplies {
+        background-color: rgb(231, 231, 233);
+        margin: 18px 3px;
+    }
+
+    .commentReplies img {
+        margin: 8px 14px;
+    }
+</style>
+<style>
+    #toggleCourse {
+        display: none;
+    }
+
+    .openCourseHeight {
+        height: 76vh !important;
+    }
+
+    @media only screen and (max-width: 400px) {
+        .nav-link {
+            font-size: 16px;
+            padding: 9px 6px;
+        }
+
+        #course-content-box {
+            height: 57px;
+        }
+    }
+
+    @media only screen and (max-width: 560px) {
+        img.rounded-circle{
+            height: 0px;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        #course-content-box {
+            height: 46px;
+            transition: height 0.4s;
+            position: static;
+        }
+
+        #content-box {
+            height: 70vh;
+            visibility: hidden;
+        }
+
+        #toggle-button {
+            visibility: visible;
+        }
+
+        #video-box {
+            z-index: 1;
+        }
+
+        #sticky-d{
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        #toggleCourse {
+            display: inline;
+        }
+        .other{
+    margin-left: -15px;
+    margin-right: -15px;
+        }
+    }
+</style>
+
+{% endblock %}
+
+{% block body %}
+
+
+<div class="container-fluid">
+
+<div class="container-fluid">
+
+    <div class="row" id="sticky-d">
+        <!-- Video Holder -->
+        <div class="col-md-9 bg-black px-0" id="video-box">
+            <div class="container videoContainer embed-responsive embed-responsive-16by9 px-3">
+                <iframe class="embed-responsive-item" src="//www.youtube.com/embed/{% if k.0.material_video %}
+                                {{k.0.material_video}}
+                            {% else %}
+                                {{j.0.material_video}}
+                            {% endif %}"
+                    allowfullscreen></iframe>
+            </div>
+            <hr>
+        </div>
+
+        <!-- Course content holder -->
+        <div class="col-md-3 px-0" id="course-content-box">
+            <div class="py-2 px-3 bg-lgrey">
+                <h5> Course Content <i class="mx-2 fas fa-plus" id="toggleCourse"></i></h5>
+            </div>
+            <div id="content-box">
+                <ul class="content-holder">
+                 {% for i in j %}
+                    <a href="/detail/{{i.topic.id}}/{{i.id}}">
+                        <li class="content-holder-item">
+                            {{forloop.counter}}. &nbsp; {{i.material_name}}
+{{j.0.content|safe}}
+                            <div class="mx-3">
+                                <i class="far fa-play-circle"></i> Free YouTube Video
+                            </div>
+                        </li>
+                    </a>
+                 {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+<br>
+    <strong><span id="likes">{% if k.0.likes %}
+                                {{k.0.likes}}
+                            {% else %}
+                                {{j.0.likes}}
+                            {% endif %} Likes</span></strong><br>
+<button type="button" class="btn btn-primary px-3" onclick="onClick()"><i class="far fa-thumbs-up" aria-hidden="true"></i> Like</button>
+<br>
+<br>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+	function onClick() {
+		// body...
+		$.ajax({
+			url : "{% url 'tutorial:like' %}",
+			data : {'i':{% if k.0.id %}
+                                {{k.0.id}}
+                            {% else %}
+                                {{j.0.id}}
+                            {% endif %}},
+			dataType: 'json',
+			success : function(data){
+				document.getElementById('likes').innerHTML=data.i + ' Likes'
+			}
+		})
+	}
+</script>
+
+
+
+    <div class="col-md-9 bg-black px-0" id="video-box2">
+        <div class="other bg-light">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab"
+                        aria-controls="overview" aria-selected="true">Overview</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="qna-tab" data-toggle="tab" href="#qna" role="tab" aria-controls="qna"
+                        aria-selected="false">Q&A</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="resources-tab" data-toggle="tab" href="#resources" role="tab"
+                        aria-controls="resources" aria-selected="false">Code & Files</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="announcements-tab" data-toggle="tab" href="#announcements" role="tab"
+                        aria-controls="announcements" aria-selected="false">Announcements</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show mx-4 mt-3 active" id="overview" role="tabpanel"
+                    aria-labelledby="overview-tab">
+
+                    <div class="container clearfix py-2 px-0">
+                        <h3 class="mb-3">
+
+                            {% if k.0.material_name %}
+                                {{k.0.material_desc}}
+                            {% else %}
+                                {{j.0.material_desc}}
+                            {% endif %}
+                        </h3>
+
+                        {% if k.0.material_name %}
+                                {{k.0.material_desc}}
+                            {% else %}
+                                {{j.0.material_desc}}
+                            {% endif %}
+
+                       <!-- There is no source code associated with this video! -->
+                        <!-- <input type=button value="Previous Page" onClick="javascript:history.go(-1);"> -->
+                        <div class="my-4 d-flex justify-content-between">
+                            <a class="btn btn-primary" style="color:#fff;"  onClick="window.history.back();return false;">&larr; Previous </a>
+
+
+
+                            <a class="btn btn-primary" href="/videos/python-tutorials-for-absolute-beginners-1">Next &rarr;</a>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade mx-4 mt-3" id="qna" role="tabpanel" aria-labelledby="qna-tab">
+                    <div id="comments" class="container px-0">
+
+
+                        <div class="my-4">
+                            <h2><label for="inputAddress">You must be logged in to post a comment!</label></h2>
+                            <button type="submit" class="btn btn-danger my-2 my-sm-0 ml-2" data-toggle="modal"
+                                data-target="#loginModal">Login Here</button>
+                            <button type="submit" class="btn btn-danger my-2 my-sm-0 ml-2" data-toggle="modal"
+                                data-target="#signupModal">Signup Here</button>
+                        </div>
+
+
+
+
+                    </div>
+
+                    <div class="container mt-4 mb-0 px-0">
+                        <h3>Comments({{count}})</h3>
+
+<form action="/detail/{% if k.0.topic.id %}{{k.0.topic.id}}{% else %}{{j.0.topic.id}}{% endif %}/{% if k.0.topic.id %}{{k.0.id}}{% else %}{{j.0.id}}{% endif %}" method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>
+
+<br>
+
+                        {% for i in comments %}
+                        <div class="row mt-4">
+                            <div class="col-sm-3 col-lg-1 col-xl-1">
+                                <img class="w-100 d-block mx-auto rounded-circle"
+                                    src="/static/videoSeries/img/commentImg.png"><br>
+                            </div>
+                            <div class="col-md-8 col-lg-10 col-xl-10 commentContainer">
+
+                                <div class="my-2 mx-2">
+                                    <b>{{i.user}}</b> <span class="badge badge-secondary">{{i.created_at}}</span><br>
+                                    {{i.comment}}
+                                </div>
+
+                                <button class="btn btn-danger btn-sm" type="button" data-toggle="collapse"
+                                    data-target="#openReply1144" aria-expanded="false"
+                                    aria-controls="collapseExample">
+                                    Add Reply
+                                </button>
+
+                                <!-- replies are here -->
+                                <div class="collapse" id="openReply1144">
+                                    <!--<form action="/videos/postcomment" method="post"><input type="hidden" name="csrfmiddlewaretoken" value="rasp3dnqYhtmM3XXjf9psCYKGO9dErLPlqR6Qd7lpPxm9E1hL0Pd5mQr4TWT5huO">
+                                        <textarea type="text" class="form-control my-2" placeholder="Write a reply..."
+                                            name="comment">
+                                        </textarea>
+                                        <input type="hidden" name="path" value="/videos/python-tutorials-for-absolute-beginners-0">
+                                        <input type="hidden" name="videoSlug" value="python-tutorials-for-absolute-beginners-0">
+                                        <input type="hidden" name="parent" value="1144">
+                                        <button class="btn btn-sm btn-danger" type="submit">Reply</button>
+                                    </form>-->
+                              <form class='login-form' style="max-width:400px;">
+                                {% csrf_token %}
+
+                                        <div class="form-group">
+                                        <div id="errorreply" style="color:red">
+                                        </div>
+                                          <label for="reply">Reply</label>
+                                          <input type="text" class="form-control" id="reply" placeholder="Your Reply...">
+                                        </div>
+
+                                        <button type="button"  class="btn btn-primary btn-lg btn-block login-btn mb-2 mt-2" onclick="reply()">Sign up</button>
+
+                                      </form>
+
+                                    <script>
+     function reply(){
+            reply = document.getElementById("reply").value;
+            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            $("#errorusername1").html("");
+            $("#errorpass").html("");
+
+            $.ajax({
+            type:"POST",
+            url:'{% url 'tutorial:reply' %}',
+            data:{
+              'csrfmiddlewaretoken': csrfmiddlewaretoken,
+              'reply':reply,
+              'id':{{i.id}}
+            },
+            success : function(data){
+                console.log(data['message']);
+                if(data['message'] == "Success"){
+                    window.location = "/"
+                }
+                else{
+                    if("username" in data['message'])
+                        $("#errorusername1").html(data['message']['username'][0]);
+                    if("password2" in data['message'])
+                        $("#errorpass").html(data['message']['password2'][0]);
+                }
+            }
+        })
+
+      }
+</script>
+
+
+
+
+                                </div>
+                                <div class='commentReplies'>
+                                    <div class="row my-3"><br>
+                                        <div class="col-sm-3 col-lg-1 col-xl-1">
+                                            <img class="w-100 rounded-circle" src="/static/videoSeries/img/commentImg.png">
+                                        </div>
+                                        <div class="col-md-8 col-lg-10 col-xl-10">
+                                            <div class="my-2 mx-2">
+                                                <b>{{i.user}}</b> <span
+                                                    class="badge badge-secondary">{{i.created_at}}</span><br>
+                                                {{i.replies}}
+
+                                                <div class="my-2">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                  </div>
+                </div>
+
+
+                <div class="tab-pane fade mx-4 mt-3" id="resources" role="tabpanel" aria-labelledby="resources-tab">
+                    <div class="container px-0">
+
+                        <h4>Resources</h4>
+
+                        <ol>
+
+                            <li class="my-2">File - <a href="/static/common/uploads/static/common/uploads/py_DSv9e1B.jpg" role="button"
+                                    class="btn btn-sm btn-outline-danger">Download here</a></li>
+
+                            <li class="my-2">File - <a href="/static/common/uploads/static/common/uploads/Python-programming-for-hackers-compressed_4OVmWvt.jpg" role="button"
+                                    class="btn btn-sm btn-outline-danger">Download here</a></li>
+
+                            <li class="my-2">File - <a href="/static/common/uploads/static/common/uploads/Python-programming-for-hackers-compressed_Q7zJ08k_6DWLszQ.jpg" role="button"
+                                    class="btn btn-sm btn-outline-danger">Download here</a></li>
+
+                        </ol>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade mx-4 mt-3" id="announcements" role="tabpanel" aria-labelledby="announcements-tab">
+                    <div class="container">
+
+                        <h4>Course Announcements</h4>
+                        <p>
+                            Any Course related announcements will be posted here
+
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+  <!-- Custom JavaScript -->
+  <script src="https://apis.google.com/js/platform.js" defer></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/433888fe69.js" crossorigin="anonymous" defer></script>
+  <script>
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+    let otpbtn = document.getElementById('otpbtn');
+    if (otpbtn != undefined) {
+      otpbtn.addEventListener('click', (e) => {
+        otpbtn.innerText = 'Sending...';
+        e.preventDefault();
+        if (!otpbtn.classList.contains('disabled')) {
+          otpbtn.classList.add('disabled');
+          otpbtn.disabled = true;
+          csrf_token = getCookie('csrftoken');
+          let formData = new FormData();
+          formData.append('email', document.getElementById('email').value);
+          formData.append('csrfmiddlewaretoken', csrf_token);
+          fetch('/utils/sendotp', {
+            method: 'POST',
+            body: formData
+          })
+            .then(response => response.text())
+            .then(data => {
+              console.log(data);
+              if (data.startsWith("Error")) {
+                otpMessage.classList.add('text-danger');
+                otpbtn.innerText = 'Error';
+              }
+              else {
+                otpMessage.classList.add('text-success');
+                otpbtn.innerText = 'OTP Sent';
+              }
+              otpMessage.innerText = data;
+            })
+            .catch(error => {
+              console.error(error)
+            })
+        }
+        else {
+          // Otp has already been sent
+        }
+
+      });
+    }
+  </script>
+
+<script defer src="/static/videoSeries/js/prism.js"></script>
+<!-- Font Awesome JS -->
+<!-- <script defer src="https://kit.fontawesome.com/433888fe69.js" crossorigin="anonymous"></script> -->
+
+<!-- jQuery Custom Scroller CDN
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script> -->
+<!-- <script type="text/javascript">
+    // Sidebar toggle
+    $(document).ready(function () {
+        $('#sidebarCollapse').add('#dismiss').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+    });
+</script> -->
+
+<script>
+    function disableScrolling() {
+        console.log("Disable scrolling");
+        let x = window.scrollX;
+        let y = window.scrollY;
+        window.onscroll = function () { window.scrollTo(x, y); };
+    }
+
+    function enableScrolling() {
+        console.log("Enable scrolling");
+        window.onscroll = function () { };
+    }
+
+    // Add copy button
+    let pres = document.getElementsByTagName('pre');
+    Array.from(pres).forEach((element2) => {
+        let element = document.createElement('button');
+        element.setAttribute('class', 'btn btn-sm btn-danger');
+        element.innerHTML = 'Copy';
+        element.style.float = 'right';
+
+        element.addEventListener('click', (e) => {
+            e.preventDefault();
+            disableScrolling();
+            console.log(e)
+            let x = window.screenX;
+            let y = window.screenY;
+
+            element.innerHTML = 'Copied!';
+            let tarea = document.createElement('textarea');
+            tarea.innerHTML = element.parentElement.children[1].innerText;
+            document.body.append(tarea);
+            tarea.focus();
+            tarea.select();
+            document.execCommand('copy');
+            tarea.style.display = 'none';
+            setTimeout(() => {
+                element.innerHTML = 'Copy';
+            }, 2000);
+            setTimeout(() => {
+                enableScrolling();
+            }, 20);
+        })
+        element2.insertBefore(element, element2.children[0]);
+    })
+
+</script>
+
+<script>
+    courseContainer = document.querySelector('#content-box');
+    stickyD = document.getElementById('sticky-d')
+    toggleCourse.addEventListener('click', () => {
+        console.log('click');
+        box = document.querySelector('#course-content-box');
+        // Opening the container
+        if (!box.classList.contains('openCourseHeight')) {
+            courseContainer.style.visibility = 'visible';
+            box.classList.add('openCourseHeight');
+            toggleCourse.classList.add('fa-minus');
+            toggleCourse.classList.remove('fa-plus');
+            stickyD.classList.remove('position-sticky')
+            stickyD.classList.add('position-static')
+            stickyD.scrollIntoView();
+        }
+        else {
+            courseContainer.style.visibility = 'hidden';
+            box.classList.remove('openCourseHeight');
+            toggleCourse.classList.remove('fa-minus');
+            toggleCourse.classList.add('fa-plus');
+            stickyD.classList.remove('position-static')
+            stickyD.classList.add('position-sticky')
+
+        }
+    })
+</script>
+
+<script>
+    // Making all images inside main box responsive and adding border
+    let mainVidBox = document.getElementById('video-box2')
+    Array.from(mainVidBox.getElementsByTagName('img')).forEach((element, ind)=>{
+        element.classList.add('img-fluid')
+        element.classList.add('border');
+        element.classList.add('border-dark');
+        element.classList.add('rounded')
+    })
+
+
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OES</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+	<style>
+
+        body{
+                background-color:#f2fffe;
+            }
+/* ======= Question area paragraph Styles ==========
+ =================================================*/
+        p.l {
+            background-color: #fff;
+            width: 100%;
+            height: 150px;
+            overflow: auto;
+            padding:10px;
+            border: 1px solid;
+            box-shadow:1px 1px 5px 1px #888888;
+        }
+
+        div.col1{
+            background-color:#fff;
+            align:center;
+            height:auto;
+            width:98%;
+            margin-left:15px;
+            margin:15px;
+            border: 1px;
+            padding: 10px;
+            box-shadow:1px 1px 5px 1px #888888;
+        }
+        div.col2{
+            background-color:#f2fffe;
+            align:center;
+            height:200px;
+            width:93%;
+            margin-right:30px;
+            margin:15px;
+            border: 1px;
+            padding: 10px;
+            box-shadow:1px 1px 5px 1px #888888;
+        }
+        @media only screen and (max-width: 1050px) {
+               div.col2{
+                    width:97%;
+                   }
+             }
+        .row{
+            margin-left:0px;
+            margin-right:0px;
+        }
+  .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto
+  {
+    position: relative;
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+
+/* ======= Answers Buttons Styles ==========
+ ========================================*/
+ /* q is for labels*/
+ .q {
+            background-color: #fcfcfc;
+            width: 100%;
+            height: auto;
+            overflow: auto;
+            padding:10px;
+            border: 0.12px solid;
+        }
+.block {
+  display: block;
+  width: 100%;
+  border: none;
+  background-color: #fcfcfc;
+  color: #000;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.block:hover {
+  background-color: #fff;
+  color: black;
+}
+
+
+/*======= Next, Previous button style===================
+========================================================*/
+.button {
+    width: 108px;
+    height: auto;
+    background: #0275d8;
+    padding: 7px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    font-size:20px;
+    line-height: 25px;
+}
+
+/* ======= Que. no. and Marks Box and Square Boxes Styles ==========
+ ==================================================================*/
+
+.box{
+    width: 50px;
+    height: auto;
+    background-color:#d9d8d7;
+    text-align:center;
+    padding:1px;
+}
+.box1{
+    width:100px;
+    height:10px;
+    border-radius:12px;
+    background-color:#2bb334;
+    color:#fff;
+    text-align:center;
+    padding:4px;
+}
+.box2{
+    width:100px;
+    height:10px;
+    border-radius:12px;
+    background-color:#f55142;
+    color:#fff;
+    text-align:center;
+    padding:3px;
+}
+.box3{
+    width:20px;
+    height:20px;
+    background:#00FF7F;
+    float:left;
+    margin-right:10px;
+    border:2px solid #000;
+}
+
+/*======= Circles style===================
+========================================================*/
+.circle {
+  background-color:#fff;
+  width: 45px;
+  height: 50px;
+  color : #000;
+  border-radius: 100%;
+  border: 2px solid #000;
+  display:inline-block;
+  line-height:44px;
+  text-align:center;
+  font-size: 22px;
+}
+.wrapper {
+    text-align: center;
+}
+
+.bt {
+    position: absolute;
+    top: 50%;
+}
+</style>
+</head>
+<body id="main">
+
+<div  id="btn1" class="wrapper"><button  class="btn btn-info bt" onclick="openFullscreen()">Allow Full Screen</button> </div>
+	<div class="w3-container w3-teal" id="header">
+		<div class="w3-row">
+			<div class="w3-col s6 w3-large w3-padding " style="text-align: right;"></div>
+		</div>
+    </div>
+
+<div id="full">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#" id="timer" style="font-size:23px; font-weight:bold;"></a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#"></a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <button class="btn btn-success my-2 my-sm-0" onClick="cal">FINISH</button>
+    </form>
+</nav>
+
+<div class="row">
+  <div class="col-12 col-sm-12 col-md-8 col-lg-8 col-xl-8">
+
+      <div class="col1">
+          <div style="margin:30px;">
+              <div>
+              <div  style="display:inline-block; white-space:nowrap;" class="box"><span id="q_id1"></span><span id="que_count"></span></div>&nbsp;&nbsp;
+              <span id="que_marks" class="box1"></span>&nbsp;
+              <span id="que_marks" class="box2">-0.25</span>&nbsp;
+              </div>
+          <p style="font-weight:bold; font-size:22px;" class="l">
+
+              <span id="Ques"></span>
+          </p>
+
+  <button class="optionsL block" id="op1" onclick="recOption('op1')"></button><br>
+  <button class="optionsR block" id="op2" onclick="recOption('op2')"></button><br>
+  <button class="optionsL block" id="op3" onclick="recOption('op3')"></button><br>
+  <button class="optionsR block" id="op4" onclick="recOption('op4')"></button><br>
+
+
+<div class="nav-btn-container">
+    <!--<button class="prev-btn button">Previous</button>
+    <button class="button" style="background-color:#fcfcfc;color:#000;float:center;" onclick="gfg_Run()">Clear</button>
+    <button class="next-btn button" style="float:right;">Next</button> -->
+    <button class="button" id="prev" style="float: left;">Previous</button>
+    <button class="button" id="clear" style="background-color:#fcfcfc;color:#000;float:center;">Clear</button>
+    <button class="button" id="mark_review" style="width:auto; background-color:#8A2BE2;color:#000;">Mark for Review</button>
+    <button class="button" id="next" style="float: right;">Next</button>
+    {% csrf_token %}
+    <br>
+</div>
+
+</div>
+
+</div>
+
+</div><!-- End of first column -->
+  <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+      <div class="col2">
+        <!-- loop pagination -->
+          {% for i in page_range %}
+            <p class="circle" id="c{{i}}">{{i}}</p> &nbsp;&nbsp;
+          {% endfor %}
+
+      <div class="row" style="bottom:0;position:relative;">
+ 	    <div class="col">
+        <h5>
+        <div class="box3"></div>
+        Answered</h5>
+	    </div>
+	    <div class="col">
+            <h5>
+        <div class="box3" style="background-color:#E6E6FA;"></div>
+        Not Attempted</h5>
+	    </div>
+      </div>
+<br>
+      <div class="row">
+ 	    <div class="col">
+            <h5>
+        <div style="background:#8A2BE2;" class="box3"></div>
+        Marked</h5>
+	    </div>
+	    <div class="col">
+            <h5>
+        <div style="background:#fff;" class="box3"></div>
+        Not Visited</h5>
+	    </div>
+      </div>
+
+    </div>
+<p id="quiz1"></p>
+  </div>
+</div>
+
+</div> <!--id = full div-->
+
+
+
+<script>
+     document.getElementById("full").style.display="none";
+//document.getElementById("test").style.display="none";
+var flag=0;
+
+document.addEventListener("fullscreenchange", function() {
+    flag++;
+    if(!document.fullscreenElement && flag%2!=0){
+        sessionStorage.clear();
+        cal();
+        //document.Test.submit();
+    }
+});
+document.addEventListener("webkitfullscreenchange", function() {
+    flag++;
+    if(!document.fullscreenElement && flag%2!=0){
+        sessionStorage.clear();
+        cal();
+        //document.Test.submit();
+    }
+});
+document.addEventListener("mozfullscreenchange", function() {
+    flag++;
+    if(!document.webkitIsFullScreen && flag%2!=0){
+        sessionStorage.clear();
+        cal();
+        //document.Test.submit();
+    }
+});
+document.addEventListener("msfullscreenchange", function() {
+    flag++;
+    if(!document.webkitIsFullScreen && flag%2!=0){
+        sessionStorage.clear();
+        cal();
+        //document.Test.submit();
+    }
+});
+
+var elem = document.getElementById("main");
+function openFullscreen() {
+
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+  flag=1;
+  document.getElementById("header").style.display="none";
+  document.getElementById("btn1").style.display="none";
+  document.getElementById("full").style.display="block";
+  // document.getElementsByClassName('w3-khaki').style.display="block";
+  //counter();
+ // check();
+}
+
+
+//window.open('/','Hello Google','titlebar=no,toolbar=no,menubar=no,width=400,height=350');
+document.getElementById('timer').innerHTML = "00 hrs : 00 mins : 00 secs";
+var count, interval, attemptedQues, currentQues, optedOptions, a;
+        var Questions = [
+        {% for i in j %}
+        {% if not forloop.first %},{% endif %}
+        {
+            Q: "{{ i.question|safe|escapejs }}",
+            marks: "{{ i.marks|safe|escapejs }}",
+            O: ["{{ i.option1|safe|escapejs }}","{{ i.option2|safe|escapejs }}","{{ i.option3|safe|escapejs }}","{{ i.option4|safe|escapejs }}"],
+        }
+    {% endfor %}];
+    localStorage.setItem("Questions", JSON.stringify(Questions));
+   document.getElementById("prev").addEventListener("click", function () {
+            if (currentQues > 0) {
+                currentQues -= 1;
+                localStorage.setItem("currentQues", currentQues);
+                getQues(currentQues);
+		document.getElementById("next").innerHTML = "Next"; // if some one goes backward from Q10
+            }
+        });
+        document.getElementById("next").addEventListener("click", function () {
+            if (currentQues == Questions.length - 1) {
+                alert("Response Submitted!");
+
+        csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        var exam_id,reg_id,att;
+        exam_id = {{j.0.exam_id.id}}
+        reg_id = {{w.0.id}}
+        att = attemptedQues;
+
+        $.ajax({
+            type:"POST",
+            url: '{% url 'oes:res' %}',
+            data:{
+                'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                'optedOptions[]':optedOptions,
+                'exam_id': exam_id,
+                'reg_id' : reg_id,
+                'att' : att,
+            },
+            success : function(data){
+                if(data['message'] == "Success"){
+                window.location = "{% url 'oes:result' w.0.id j.0.exam_id.id %}";
+                //window.open("result", "_self");
+            }
+        },
+        error: function () {
+            alert("Error");
+        },
+        });
+         //calScore();
+         }
+         else {
+                currentQues += 1;
+                getQues(currentQues);
+                if (currentQues == Questions.length - 1) {
+                    document.getElementById("next").innerHTML = "Submit!";
+                }
+                localStorage.setItem("currentQues", currentQues);
+         }
+        });
+        document.getElementById("clear").addEventListener("click", function () {
+                optedOptions[currentQues] = null;
+                 for (let i = 1; i <= 4; i++) //4 is number of options
+                {
+                    document.getElementById('op' + i).style.boxShadow = "0 0 10px tomato";//turn option button glow red
+                }
+                optGreen(currentQues);
+        });
+        document.getElementById("mark_review").addEventListener("click", function () {
+        for (let i = 1; i < Questions.length+1; i++)
+        {       a= currentQues + 1;
+                /*localStorage.setItem("attempted_circle",a);
+                attempted_circle[i]++;*/
+                document.getElementById("c"+a).style.backgroundColor = "BlueViolet";
+                break;
+        }
+        });
+        $(document).ready(function startQuiz() {
+            attemptedQues = parseInt(localStorage.getItem('attemptedQues')) || 0;
+            /*if (attemptedQues > 1) {
+                currentQues = parseInt(localStorage.getItem('currentQues'));
+                optedOptions = JSON.parse(localStorage.getItem("optedOptions"));
+                var count = parseInt(localStorage.getItem('count'));
+                window.alert("Test will continued from where you left!");
+            }*/
+                currentQues = 0;
+                optedOptions = new Array(Questions.length).fill(null);
+                attemptedQues = 0;
+                count = {{time}};
+                attempted_circle = new Array(Questions.length).fill(null);
+
+            getQues(currentQues);
+
+            var interval = setInterval(function () {
+            count--;
+            var hr = parseInt(count/3600);
+            var minutes = parseInt(count / 60) - (hr * 60);
+            var remainingSeconds = parseInt(count % 60);
+            if (hr < 10) {
+                hr = "0" + parseInt(hr);
+            }
+            if (minutes < 10) {
+                minutes = "0" + parseInt(minutes);
+            }
+            if (remainingSeconds < 10) {
+                remainingSeconds = "0" + parseInt(remainingSeconds);
+            }
+            document.getElementById('timer').innerHTML = '<i class="fa fa-clock-o" style="font-size:25px; color:white;"></i> ' + hr + "<span> hrs : </span>" + minutes + " mins : " + remainingSeconds+ " secs";
+            document.getElementById('timer').innerHTML = '<i class="fa fa-clock-o" style="font-size:25px; color:white;"></i> ' + hr + "<span> hrs : </span>" + minutes + " mins : " + remainingSeconds+ " secs";
+            count--;
+            localStorage.setItem("count", count);
+            if (count === 0) {
+                clearInterval(interval);
+                document.getElementById('timer').innerHTML = "Time is Over";
+                alert("You're out of time!");
+                calScore();
+            }
+            }, 1000);
+        });
+
+        function getQues(qNum) {
+            document.getElementById("que_count").textContent = Questions.length;
+            //document.getElementById("q_id").textContent = qNum + 1 + ")";
+            document.getElementById("q_id1").textContent = qNum + 1 + "/";
+            document.getElementById("que_marks").textContent = Questions[qNum].marks;
+            document.getElementById("Ques").innerText = 'Q' + (qNum + 1) + '- ' + Questions[qNum].Q;
+            document.getElementById("op1").textContent = Questions[qNum].O[0];
+            document.getElementById("op2").textContent = Questions[qNum].O[1];
+            document.getElementById("op3").textContent = Questions[qNum].O[2];
+            document.getElementById("op4").textContent = Questions[qNum].O[3];
+            optGreen(currentQues);
+        }
+
+        function recOption(optOp) {
+            if (optedOptions[currentQues] == null) {
+                attemptedQues++;
+                localStorage.setItem('attemptedQues', attemptedQues);
+            }
+            //document.getElementById(optOp).style.boxShadow = "0 0 10px lime";
+            optedOptions[currentQues] = document.getElementById(optOp).textContent;
+            localStorage.setItem("optedOptions", JSON.stringify(optedOptions));
+            optGreen(currentQues);
+        }
+
+        function optGreen(currentQues){
+            // if (optedOptions[currentQues] != null) {
+                for (let i = 1; i <= 4; i++) //4 is number of options
+                {
+                    document.getElementById('op' + i).style.boxShadow = "0 0 10px tomato";//turn option button glow red
+                    if (optedOptions[currentQues] != null && optedOptions[currentQues] == document.getElementById('op' + i).textContent)
+                    {
+                        document.getElementById('op' + i).style.boxShadow = "0 0 10px lime";//turn opted option button glow green
+                    }
+                }
+
+          for (let i = 1; i < Questions.length+1; i++)
+        {
+            if (optedOptions[currentQues] != null){
+                console.log(currentQues);
+                a= currentQues + 1;
+                    /*localStorage.setItem("attempted_circle",a);
+                    attempted_circle[i]++;*/
+                document.getElementById("c"+a).style.backgroundColor = "SpringGreen";
+                break;
+            }
+            else{
+                a= currentQues + 1;
+                localStorage.setItem("attempted_circle",a);
+                attempted_circle[i]++;
+                document.getElementById("c"+a).style.backgroundColor = "Lavender";
+                break;
+            }
+        }
+
+
+            // }
+        }
+
+    function cal() {
+           /* let score = 0;
+            for (let i = 0; i < Questions.length; i++) {
+                if (optedOptions[i] !== null && optedOptions[i] === Questions[i].A) score++;
+            }
+            var endScore = "<div class='qTray'><center><br><br><br><br><br><h2> Quiz Ended!<h2><br><h3>Your score is " + score + "/10!</h3></center></div>";
+            document.getElementById("quiz1").innerHTML = endScore;
+            localStorage.clear();*/
+
+        csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        var exam_id1,reg_id1,att1;
+        exam_id1 = {{j.0.exam_id.id}}
+        reg_id1 = {{w.0.id}}
+        att1 = attemptedQues;
+
+        $.ajax({
+            type:"POST",
+            url: '{% url 'oes:res' %}',
+            data:{
+                'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                'optedOptions[]':optedOptions,
+                'exam_id': exam_id1,
+                'reg_id' : reg_id1,
+                'att' : att1,
+            },
+            success : function(data){
+                if(data['message'] == "Success"){
+                window.location = "{% url 'oes:result' w.0.id j.0.exam_id.id %}";
+                //window.open("result", "_self");
+            }
+        },
+        error: function () {
+            alert("Error");
+        },
+        });
+        }
+</script>
+
+</body>
+</html>

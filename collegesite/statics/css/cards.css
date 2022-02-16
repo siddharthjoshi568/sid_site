@@ -1,0 +1,58 @@
+    .d{
+  text-align: center;
+  position: relative;
+  margin: 50px auto;
+}
+h2 {
+  font-family: arial;
+  color: #333;
+  font-size: 40px;
+  text-align: center;
+  margin: 0 30px;
+}
+.sp{
+  display: inline-block;
+  position: absolute;
+  background: #faa;
+  height: 3px;
+  left: 50%;
+}
+span.top {
+  width: 70px;
+  top: 20px;
+}
+span.bottom {
+  width: 120px;
+  top: 35px;
+}
+span.left {
+  transform: translateX(-150px);
+}
+span.bottom.left {
+  transform: translateX(-200px);
+}
+span.right {
+  transform: translateX(80px);
+}
+
+.card {
+  padding:10px;
+  background: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  height: auto;
+  position: relative;
+  width: 100%;
+}
+.card-5 {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 7px 7px rgba(0,0,0,0.16);
+}
+.yellow{
+ color:#fcba03;
+}
+.green{
+ color:green;
+}
+.red{
+ color:red;
+}

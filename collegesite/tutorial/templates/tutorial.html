@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block body %}
+			<img src="{{i.image.url}}" height="300" width="300">
+  <!--==========================
+      Courses Section
+    ============================-->
+<div id="services" class="section-bg">
+      <div class="container">
+
+        <header class="section-header">
+          <h3>Courses</h3>
+          <p>Some interesting courses here.</p>
+        </header>
+
+        <div class="row">
+
+		{% for i in j %}
+
+          <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-duration="1.4s">
+            <div class="box">
+			<a href="/detail/{{i.pk}}/">
+              <div class="icon" style="background: #fceef3;"><i class="ion-ios-analytics-outline" style="color: #ff689b;"></i></div>
+                <img src="{{i.image.url}}" height="auto" width="100%">
+				<h4 class="title"><a href="{% url 'tutorial:detail' i.pk %}">{{i.topic}}</a></h4>
+
+				<p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
+
+			  <div style="align:center; padding-left:50px;">
+                <a href="{% url 'tutorial:detail' i.pk %}">
+			  	<button class="button button--tamaya button--border-thick" data-text="Learn Java"><span>Learn Java</span></button>
+                 </a>
+			  </div>
+
+            </div>
+			</a>
+          </div>
+		{% endfor %}
+        </div>
+
+      </div>
+</div>
+    </section><!-- #services -->
+
+
+
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'stu_dash.html' %}
+
+{% block head %}
+<style>
+.card {
+  padding:10px;
+  background: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  height: auto;
+  position: relative;
+  width: 100%;
+}
+.card-5 {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 7px 7px rgba(0,0,0,0.16);
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+<section class="content container-fluid">
+
+          <!--------------------------
+        | Your Page Content Here |
+        -------------------------->
+<div class="row">
+
+    {% for i in exams %}
+    <div class="col-md-4">
+        <div class="card card-5">
+            <div class="container" style="width:100%">
+            <h3 class="box-title"><b>{{i.exam_name}}</b></h3>
+            <div class="row"><div class="col-lg-6"><h5><b>Description:</b></h5></div><div class="col-lg-6">{{i.exam_name}}</div></div>
+            <div class="row"><div class="col-lg-6"><h5><b>Course:</b></h5></div><div class="col-lg-6">{{i.course_name}}</div></div>
+            <div class="row"><div class="col-lg-6"><h5><b>No. of Questions:</b></h5></div><div class="col-lg-6">{{i.no_of_questions}}</div></div>
+            <div class="row"><div class="col-lg-6"><h5><b>Attempt no:</b></h5></div><div class="col-lg-6">{{i.attempt_no}}</div></div>
+            <div class="row"><div class="col-lg-6"><h5><b>Pass percentage:</b></h5></div><div class="col-lg-6">{{i.pass_percentage}}</div></div>
+            <div class="row"><div class="col-lg-6"><h5><b>Start Time:</b></h5></div><div class="col-lg-6">{{i.start_time}}</div></div>
+            <div class="row"><div class="col-lg-6"><h5><b>End Time:</b></h5></div><div class="col-lg-6">{{i.end_time}}</div></div>
+            {% if i.attemptable == 0 %}
+            <div class="box-footer" style="display:block;"><button class="btn btn-primary disabled" type="submit" style="float:right">Attempt</button></div>
+            {% else %}
+            <div class="box-footer" style="display:block;">
+                <form method="POST" action="instructions/{{i.registration_id}}">
+                    <!--<input type = "hidden" name = "exam_id" value = "{{i.exam_id}}">
+                    <input type="hidden" id="r" name="registration_id" value = "{{i.registration_id}}">-->
+                    {% csrf_token %}
+                    <button class="btn btn-primary" type="submit" style="float:right" onClick="fun()">Attempt</button>
+                </form>
+            </div>
+               {% endif %}
+          </div>
+        </div>
+    </div>
+        <!-- if last column in row -->
+        {% if forloop.counter|divisibleby:"3" and not forloop.last %}
+        </div><br><div class="row">
+        {% endif %}
+    {% endfor %}
+</div>
+</section>
+<script>
+    fun(){
+        reg_id=document.getElementById("r");
+        localStorage.setItem("reg_id",reg_id);
+        console.log(reg_id);
+    }
+</script>
+{% endblock %}

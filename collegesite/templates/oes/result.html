@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OES</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+	<style>
+
+        body{
+                background-color:#f2fffe;
+            }
+/* ======= Question area paragraph Styles ==========
+ =================================================*/
+        p.l {
+            background-color: #fff;
+            width: 100%;
+            height: 150px;
+            overflow: auto;
+            padding:10px;
+            border: 1px sulid;
+            box-shadow:1px 1px 5px 1px #888888;
+        }
+
+        div.col1{
+            background-color:#fff;
+            align:center;
+            height:auto;
+            width:98%;
+            margin-left:15px;
+            margin:15px;
+            border: 1px;
+            padding: 10px;
+            box-shadow:1px 1px 5px 1px #888888;
+        }
+        div.col2{
+            background-color:#f2fffe;
+            align:center;
+            height:200px;
+            width:93%;
+            margin-right:30px;
+            margin:15px;
+            border: 1px;
+            padding: 10px;
+            box-shadow:1px 1px 5px 1px #888888;
+        }
+        @media only screen and (max-width: 1050px) {
+               div.col2{
+                    width:97%;
+                   }
+             }
+        .row{
+            margin-left:0px;
+            margin-right:0px;
+        }
+  .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto
+  {
+    position: relative;
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+
+/*======= Next, Previous button style===================
+========================================================*/
+.button {
+    width: 108px;
+    height: auto;
+    background: #0275d8;
+    padding: 7px;
+    text-align: center;
+    border-radius: 5px;
+    color: white;
+    font-weight: buld;
+    font-size:20px;
+    line-height: 25px;
+}
+
+/* ======= Que. no. and Marks Box and Square Boxes Styles ==========
+ ==================================================================*/
+
+.box{
+    width: 50px;
+    height: auto;
+    background-color:#d9d8d7;
+    text-align:center;
+    padding:1px;
+}
+.box1{
+    width:100px;
+    height:10px;
+    border-radius:12px;
+    background-color:#2bb334;
+    color:#fff;
+    text-align:center;
+    padding:4px;
+}
+.box2{
+    width:100px;
+    height:10px;
+    border-radius:12px;
+    background-color:#f55142;
+    color:#fff;
+    text-align:center;
+    padding:3px;
+}
+.box3{
+    width:20px;
+    height:20px;
+    background:#00FF7F;
+    float:left;
+    margin-right:10px;
+    border:2px sulid #000;
+}
+
+/*======= Circles style===================
+========================================================*/
+.circle {
+  background-color:#fff;
+  width: 45px;
+  height: 50px;
+  color : #000;
+  border-radius: 100%;
+  border: 2px sulid #000;
+  display:inline-block;
+  line-height:44px;
+  text-align:center;
+  font-size: 22px;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+.button {
+    position: relative;
+    top: 50%;
+}
+.green{
+    color:green;
+    font-size:27px;
+}
+.red{
+    color:red;
+    font-size:27px;
+}
+</style>
+</head>
+<body id="q">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#" id="timer" style="font-size:23px; font-weight:buld;"></a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <h4 align="center"><u><b>Result</b></u></h4>
+      </li>
+    </ul>
+</nav>
+
+<div class="container-fluid">
+    <style>
+    .card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}
+</style>
+
+    <div id="demo"></div>
+    <div style="display:block; width: 80%; border: 3px solid green; padding: 10px;margin:50px;">
+        <h5>Total Marks : {{context.0.total_marks}}</h5>
+        <h5>Attempted : {{context.0.no_ques_attempt}}</h5>
+        <h5>Wrong Answers : {{context.0.no_ques_wrong}}</h5>
+    </div>
+
+    <div class="wrapper">
+        <a href="{% url 'oes:index' %}"><button class="button">Home</button></a>
+    </div>
+<br>
+<br>
+
+<!--    <div class="row">
+        <div class="col-12 mt-3">
+            <div class="card">
+                <div class="card-horizontal">
+                    <div class="card-body">
+
+                    </div>
+                </div>
+                    <div class="card-footer">
+
+                    </div>
+            </div>
+        </div>
+    </div>
+-->
+
+</div>
+<script>
+    Questions = JSON.parse(localStorage.getItem("Questions"));
+    optedOptions = JSON.parse(localStorage.getItem("optedOptions"));
+    var Answers = [
+        {% for i in ques %}
+        {% if not forloop.first %},{% endif %}
+        {
+            A: "{{ i.answer|safe|escapejs }}",
+        }
+    {% endfor %}];
+
+    var a = [];//for 0 1 2 to find answer is correct or not..........
+    for (i=0; i<Questions.length; i++) {
+        a[i] = 1;// 1 for incorrect answers
+        if(optedOptions[i] == Answers[i].A)
+        {
+            a[i] = 0;// 0 for correct answers
+        }
+        else if(optedOptions[i] == null){
+            a[i] = 2;// 2 for unattempted answers
+        }
+    }
+
+    var x ='', i,c=0;
+    for (i=0; i<Questions.length; i++) {
+    //x = x + '<h' + i + '>Heading ' + i + '</h' + i + '>';
+    c++;
+
+    //x = x + "<div><p>Hello "+ i + "</p></div>";
+    x += '<div class="row">';
+    x += '<div class="col-12 mt-3">';
+    x += '<div class="card">';
+    x += '<div class="card-horizontal">';
+    x += '<div class="card-body">';
+    //Body
+    //If answers are correct
+    if(a[i]==0){
+    x += '<h5> Q ' + c + ') -' + Questions[i].Q +'</h5>';
+    x += '<ul class="fa-ul" style = "list-style-type: circle;">';
+
+    for(k=0;k<4;k++){
+        if(optedOptions[i] == Questions[i].O[k]){
+            x += '<li><span class="fa-li"><i class="fa fa-check green"></i></span> ' + Questions[i].O[k] + '</li>';
+        }
+        else{
+            x += '<li> ' + Questions[i].O[k] + '</li>';
+            }
+      }
+    x += '</ul>';
+
+    x += '</div>';
+    x += '</div>';
+    x += '<div class="card-footer" style="background-color:#a1ff9c;">';
+    x += '<p>Answer = <b>'+ Answers[i].A +'</b></p>';
+    x += '</div>';
+    x += '</div>';
+    x += '</div>';
+    x += '</div>';
+    }
+
+    //If answers are incorrect
+    if(a[i]==1){
+    x += '<h5> Q ' + c + ') -' + Questions[i].Q +'</h5>';
+    x += '<ul class="fa-ul" style = "list-style-type: circle;">';
+
+    for(k=0;k<4;k++){
+        if(optedOptions[i] == Questions[i].O[k]){
+            x += '<li><span class="fa-li"><i class="fa fa-times red"></i></span> ' + Questions[i].O[k] + '</li>';
+        }
+        else if(Answers[k].A == Questions[i].O[k]){
+            x += '<li><span class="fa-li"><i class="fa fa-check green"></i></span> ' + Questions[i].O[k] + '</li>';
+            }
+        else{
+            x += '<li> ' + Questions[i].O[k] + '</li>';
+        }
+      }
+    x += '</ul>';
+
+    x += '</div>';
+    x += '</div>';
+    x += '<div class="card-footer" style="background-color:#a1ff9c;">';
+    x += '<p>Answer = <b>'+ Answers[i].A +'</b></p>';
+    x += '</div>';
+    x += '</div>';
+    x += '</div>';
+    x += '</div>';
+    }
+
+    //If unattempted
+    if(a[i]==2){
+    x += '<h5> Q ' + c + ') -' + Questions[i].Q +'</h5>';
+    x += '<ul class="fa-ul" style = "list-style-type: circle;">';
+
+    for(k=0;k<4;k++){
+        if(Answers[k].A == Questions[i].O[k]){
+            x += '<li><span class="fa-li"><i class="fa fa-check green"></i></span> ' + Questions[i].O[k] + '</li>';
+            }
+        else{
+            x += '<li> ' + Questions[i].O[k] + '</li>';
+        }
+      }
+    x += '</ul>';
+
+    x += '</div>';
+    x += '</div>';
+    x += '<div class="card-footer" style="background-color:#a1ff9c;">';
+    x += '<p>Answer = <b>'+ Answers[i].A +'</b></p>';
+    x += '</div>';
+    x += '</div>';
+    x += '</div>';
+    x += '</div>';
+    }
+
+    document.getElementById("demo").innerHTML = x;
+    }
+
+</script>
+
+</body>
+</html>

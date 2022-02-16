@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block body %}
+  <!--==========================
+      Courses Section
+    ============================-->
+<div id="services" class="section-bg">
+      <div class="container">
+
+        <header class="section-header">
+          <h3>Tutorials</h3>
+          <p>Some interesting tutorials here.</p>
+        </header>
+
+        <div class="row">
+
+		{% for i in j %}
+
+          <div class="col-md-6 col-lg-4 wow bounceInUp" data-wow-duration="1.4s">
+            <div class="box">
+			<a href="/detail/{{i.pk}}/">
+              <div><img src="{{i.image.url}}" style="height:150px;width:150px;border-radius:50%;"></div>
+                <br>
+				<h4 class="title"><a href="{% url 'tutorial:detail' i.pk %}">{{i.topic}}</a></h4>
+
+				{% if i.description %}<p class="description">{{i.description}}</p>{% endif %}
+
+			  <div style="align:center; padding-left:50px;">
+                <a href="{% url 'tutorial:detail' i.pk %}">
+			  	<button class="button button--tamaya button--border-thick" data-text="Learn"><span>Learn</span></button>
+                 </a>
+			  </div>
+
+            </div>
+			</a>
+          </div>
+		{% endfor %}
+        </div>
+
+      </div>
+</div>
+    </section><!-- #services -->
+
+
+
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+    <style>
+
+    </style>
+
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3><b>Edit Profile</b></h3>
+        </div>
+        <div class="col-md-6 mx-auto p-3 bg-light my-2">
+            <div class="text-center">
+                <img src="{{request.user.student_model.image.url}}" style="height:150px;width:150px;border-radius:50%">
+            </div>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                 {% if status %}
+                    <div class="alert alert-primary">{{status}}</div>
+                {% endif %}
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Username</label>
+                            <input type="text" class="form-control" name="username" placeholder="Enter Username" value="{{user.username}}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Name</label>
+                            <input type="text" class="form-control" name="name" placeholder="Enter Name" value="{{data.name}}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email" placeholder="Enter Email" value="{{user.email}}">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Profile Picture</label>
+                            <input type="file" class="form-control" name="image">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Computer Code</label>
+                            <input type="text" value="{{data.computer_code}}" class="form-control" name="computer_code" placeholder="Enter Contact Number" pattern="[0-9]{5}" title="Number must contain 5 digits only!!">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Enrollment Number</label>
+                            <input type="text" class="form-control" name="enrollment_no" placeholder="Enter Enrollment Number" value="{{data.enrollment_no}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Course</label>
+
+                            <select name="course"  class="form-control">
+                                <option value="BCA">BCA</option>
+
+                                {% if data.course == "MCA" %}
+                                <option value="MCA" selected>MCA</option>
+                                {% else %}
+                                <option value="MCA">MCA</option>
+                                {% endif %}
+
+                                {% if data.course == "IMCA" %}
+                                <option value="IMCA" selected>IMCA</option>
+                                {% else %}
+                                <option value="IMCA">IMCA</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="changeprofile" value="Save Changes" class="btn btn-primary" style="width:50%;border-radius:20px;">
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,474 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <title>LMS</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+
+  <!-- Favicons -->
+  <link href="{% static 'img/favicon.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Bootstrap 4 Latest -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,500,600,700,700i|Montserrat:300,400,500,600,700" rel="stylesheet">
+
+  <!-- Bootstrap CSS File -->
+  <link href="{% static 'lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Libraries CSS Files -->
+  <link href="{% static 'lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/animate/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+  <!-- Main Stylesheet File -->
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+
+  {% block head %}
+  {% endblock %}
+
+</head>
+<body>
+  <!--==========================
+  Header
+  ============================-->
+  <header id="header" style="background-color: #fff;">
+
+    <div id="topbar">
+      <div class="container">
+        <div class="social-links">
+          <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+          <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+          <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+          <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="logo float-left">
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <h1 class="text-light"><a href="#intro" class="scrollto"><span>LMS</span></a></h1>
+        <!-- <a href="#header" class="scrollto"><img src="img/logo.png" alt="" class="img-fluid"></a> -->
+      </div>
+
+       <nav class="main-nav float-right d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="{% url 'tutorial:index' %}">Home</a></li>
+		  <li><a href="{% url 'tutorial:tutorial' %}">Tutorial</a></li>
+          <li><a href="{% url 'oes:index' %}">Exam</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#footer">Contact Us</a></li>
+
+         {% if request.user.is_authenticated %}
+          <li class="drop-down"><a><img src="{{request.user.student_model.image.url}}"  width="30px" height="30px" alt="User" style="border-radius:100%;"></a>
+            <ul>
+              <li><a href="{% url 'tutorial:profile' %}">My Profile</a></li>
+              <li><a href="{% url 'tutorial:logout_request' %}">Logout</a></li>
+            </ul>
+          </li>
+
+         {% else %}
+         <li><a data-toggle="modal" data-target="#myModal" href="#">Login/Register</a></li>
+         {% endif %}
+
+        </ul>
+      </nav><!-- .main-nav -->
+    </div>
+  </header><!-- #header -->
+
+
+  <!--==========================
+    Login/Register Modal Section
+  ============================-->
+
+<div id="myModal" class="modal fade loginM" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                        <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                  <a class="nav-link active" data-toggle="tab" href="#home">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link" data-toggle="tab" href="#menu1">Register</a>
+                                </li>
+                        </ul>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <style type="text/css">
+                  input{
+                    max-width:500px;
+                  }
+                </style>
+                <div class="modal-body">
+                        <div class="tab-content">
+                            <div id="home" class="container tab-pane active">
+                                <form class='login-form' style="max-width:400px;">
+                                        <div class="form-group">
+                                          <label for="username">Username</label>
+                                          <input type="email" class="form-control" id="username" placeholder="Username">
+                                          <small class="form-text text-muted">Enter your Username</small>
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label for="password">Password</label>
+                                          <input type="password" name="password" class="form-control" id="password" placeholder="Password" />
+                                          <div id="errorlogin" style="color:red"></div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary btn-lg btn-block login-btn" onclick="login()">Login</button>
+                                      </form>
+                            </div>
+
+                                 <div id="menu1" class="container tab-pane">
+                                <!--<div id="menu1" class="container tab-pane">-->
+                                <form class='login-form' style="max-width:400px;">
+                                        <div class="form-group">
+                                        <div id="errorusername1" style="color:red">
+                                        </div>
+                                          <label for="username1">Username</label>
+                                          <input type="text" class="form-control" id="username1" placeholder="Enter Username">
+                                        </div>
+                                        <div class="form-group">
+                                        <div id="errorname" style="color:red">
+                                        </div>
+                                          <label for="name">Name</label>
+                                          <input type="text" class="form-control" id="name" placeholder="Enter Your Full Name">
+                                        </div>
+
+                                        <div class="form-group">
+                                        <div id="erroremail" style="color:red">
+                                        </div>
+                                          <label for="email">Email</label>
+                                          <input type="text" class="form-control" id="email" placeholder="Enter Your Email ID">
+                                        </div>
+                                        {% csrf_token %}
+                                    <button type="button"  class="btn btn-primary login-btn mb-2 mt-2" onclick="sendotp()">Send Otp</button>
+                                    <div class="form-group">
+                                        <div id="errorotp" style="color:red">
+                                        </div>
+                                          <label for="otp">Enter OTP sent to your gmail address..</label>
+                                          <input type="text" class="form-control" id="otp" placeholder="Enter OTP">
+                                      </div>
+                                        <div class="form-group">
+                                        <div id="errorcomputercode" style="color:red">
+                                        </div>
+                                          <label for="computer_code">Computer Code</label>
+                                          <input type="number" class="form-control" id="computer_code" placeholder="Enter Computer Code">
+                                        </div>
+
+                                        <div class="form-group">
+                                        <div id="errorcourse" style="color:red">
+                                        </div>
+                                          <label for="name">Course</label>
+                                          <!--<input type="text" class="form-control" id="name" placeholder="Enter Your Course">-->
+                                          <select id="mySelect">
+                                            <option value="BCA">BCA</option>
+                                            <option value="MCA">MCA</option>
+                                            <option value="IMCA">IMCA</option>
+                                          </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                        <div id="errorpass" style="color:red">
+                                        </div>
+                                          <label for="password1">Create Password</label>
+                                          <input type="password" class="form-control" id="password1" placeholder="Password" />
+                                        </div>
+
+                                        <div class="form-group">
+                                          <label for="password2">Confirm Password</label>
+                                          <input type="password" class="form-control" id="password2" placeholder="Password" />
+                                        </div>
+                                        <button type="button"  class="btn btn-primary btn-lg btn-block login-btn mb-2 mt-2" onclick="signup()">Sign up</button>
+                                      </form>
+                            </div>
+                            </div>
+
+                          </div>
+                </div>
+              </div>
+            </div>
+    </div>
+
+
+<br><br><br><br><br>
+
+    {% block body %}
+    {% endblock %}
+
+  <!--==========================
+    Footer
+  ============================-->
+  <footer id="footer" class="section-bg">
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="row">
+
+          <div class="col-lg-6">
+
+            <div class="row">
+
+                <div class="col-sm-6">
+
+                  <div class="footer-info">
+                    <h3>LMS</h3>
+                    <h4>Contact Person. : -<br> Mr. Rohit Kumar Vyas</h4>
+                    <p>Mob. No. : -  8085224628 , 9926999161</p>
+                    <p>Email Id: admission.soc@ipsacademy.org</p>
+                    <br>
+                    <h4>Discipline and Anti Ragging Committee:
+                    <br>Incharge : - Dr.Bharat Singh</h4>
+                    <p>Mob. No. : - 98260 67207</p>
+                    <p>Email Id: - bharatsingh@ipsacademy.org</p>
+                    <br>
+                    <h4>Women's Grievance Cell :
+                    <br>Head : - Ms. Naziya Hussain</h4>
+                    <p>Phone No.-0731- 4014858</p>
+                    <p>Email Id : - naziyahussain@ipsacademy.org</p>
+                  </div>
+
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                      <li><a href="#">Home</a></li>
+                      <li><a href="#">Tutorials</a></li>
+                      {% if request.user.is_authenticated %}
+                      <li><a href="#">Exam</a></li>
+                      {% endif %}
+                      <li><a href="#">About Us</a></li>
+                      <li><a href="#">Privacy policy</a></li>
+                    </ul>
+                  </div>
+
+                  <div class="footer-links">
+                    <h4>Contact Us</h4>
+                    <p>
+                      Address: IPS Academy, A.B Road, Rajendra Nagar, Indore, <br>
+                      Madhya Pradesh 452001<br>
+                      India <br>
+
+                      <strong>Email:</strong> office.soc@ipsacademy.org<br>
+                      <strong>Phone:</strong> +0731-4014858 , 859<br>
+                    </p>
+                  </div>
+
+                  <div class="social-links">
+                    <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+                    <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+                  </div>
+
+                </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-6">
+
+            <div class="form">
+
+              <h4>Send us a message</h4>
+              <p>For more information contact us.</p>
+              <form action="" method="post" role="form" class="contactForm">
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                  <div class="validation"></div>
+                </div>
+                <!--<div class="form-group">
+                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                  <div class="validation"></div>
+                </div>-->
+                <div class="form-group">
+                  <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                  <div class="validation"></div>
+                </div>
+
+                <div id="sendmessage">Your message has been sent. Thank you!</div>
+                <div id="errormessage"></div>
+
+                <div class="text-center"><button type="submit" title="Send Message">Send Message</button></div>
+              </form>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong>LMS</strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        Designed by <a href="#">Siddharth Joshi</a>
+      </div>
+    </div>
+    </div>
+
+	<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+  <!-- Uncomment below i you want to use a preloader -->
+  <!-- <div id="preloader"></div> -->
+
+  <!-- JavaScript Libraries -->
+  <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'lib/jquery/jquery-migrate.min.js' %}"></script>
+  <script src="{% static 'lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+  <script src="{% static 'lib/mobile-nav/mobile-nav.js' %}"></script>
+  <script src="{% static 'lib/wow/wow.min.js' %}"></script>
+  <script src="{% static 'lib/waypoints/waypoints.min.js' %}"></script>
+  <script src="{% static 'lib/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'lib/isotope/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'lib/lightbox/js/lightbox.min.js' %}"></script>
+  <!-- Contact Form JavaScript File -->
+  <script src="{% static 'contactform/contactform.js' %}"></script>
+
+  <!-- Template Main Javascript File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+  </footer><!-- #footer -->
+
+<script>
+function login(){
+        username = document.getElementById("username").value;
+        password = document.getElementById("password").value;
+        csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        $("#errorlogin").html("");
+        $.ajax({
+            type:"POST",
+            url:'/loginpage/',
+            data:{
+                'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                'username':username,
+                'password':password,
+            },
+            success : function(data){
+                console.log(data);
+                if(data['message'] == "Success"){
+                    location.reload();
+                }
+                else if(data['message'] == "inactive"){
+                    $("#errorlogin").html("Please verify this E-mail address.");
+                }
+                else{
+                    $("#errorlogin").html("The E-mail and Password do not match.");
+                }
+            }
+        });
+    }
+
+
+    function sendotp(){
+            email = document.getElementById("email").value;
+
+            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+            $.ajax({
+            type:"GET",
+            url:'{% url 'tutorial:register' %}',
+            data:{
+              'csrfmiddlewaretoken': csrfmiddlewaretoken,
+              'email':email,
+            },
+            success : function(data){
+                console.log(data['message']);
+                if(data['message'] == "Success"){
+                    //location.reload();
+                    console.log("Success");
+                }
+                else{
+                    if("username" in data['message'])
+                        $("#errorotp").html(data['message']['otp'][0]);
+                }
+            }
+        })
+
+      }
+
+
+
+
+
+   function signup(){
+            username = document.getElementById("username1").value;
+            name = document.getElementById("name").value;
+            email = document.getElementById("email").value;
+            otp = document.getElementById("otp").value;
+            computer_code = document.getElementById("computer_code").value;
+
+            var x = document.getElementById("mySelect").selectedIndex;
+            var course = document.getElementsByTagName("option")[x].value;
+
+            password1 = document.getElementById("password1").value;
+            password2 = document.getElementById("password2").value;
+            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            $("#errorusername1").html("");
+            $("#errorpass").html("");
+            $("#errorcomputercode").html("");
+            $("#errorname").html("");
+            $("#erroremail").html("");
+            $("#errorotp").html("");
+
+            $.ajax({
+            type:"POST",
+            url:'{% url 'tutorial:register' %}',
+            data:{
+              'csrfmiddlewaretoken': csrfmiddlewaretoken,
+              'username':username,
+              'name':name,
+              'email':email,
+              'otp':otp,
+              'computer_code':computer_code,
+              'course':course,
+              'password1':password1,
+              'password2':password2,
+            },
+            success : function(data){
+                console.log(data['message']);
+                if(data['message'] == "Success"){
+                    location.reload();
+                }
+                else{
+                    if("username" in data['message'])
+                        $("#errorusername1").html(data['message']['username'][0]);
+                    if("password2" in data['message'])
+                        $("#errorpass").html(data['message']['password2'][0]);
+                    if("computer_code" in data['message'])
+                        $("#errorcomputercode").html(data['message']['computer_code'][0]);
+                }
+            }
+        })
+
+      }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+{% extends 'stu_dash.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/dashboard_charts.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="card-box bg-blue">
+                    <div class="inner">
+                        <h3> {{exam_count}} </h3>
+                        <p> Examinations </p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                    </div>
+                    <a href="{% url 'oes:examinations' %}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-sm-6">
+                <div class="card-box bg-green">
+                    <div class="inner">
+                        <h3> {{result_count}} </h3>
+                        <p> Result </p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-bar-chart" aria-hidden="true"></i>
+                    </div>
+                    <a href="{% url 'oes:result_analysis' %}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card-box bg-orange">
+                    <div class="inner">
+                        <h3> {{user_reg_count}} </h3>
+                        <p> User Registrations </p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                    </div>
+                    <a href="{% url 'oes:user_registration' %}" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card-box bg-red">
+                    <div class="inner">
+                        <h3> 4 </h3>
+                        <p> Faculty Strength </p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <a href="#" class="card-box-footer">View More <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<br><br>
+
+    <div class="container-fluid">
+            <main>
+                <div class="dashboard-container">
+                    <div class="card-1">
+                        <h4 class="chart-lbl">
+                            Marks Obtained
+                        </h4>
+                        <div class="divider">
+                        </div>
+                        <div class="content-center">
+                            <div class="doughnut-chart-container">
+                                <canvas class="doughnut-chart" id="doughnut">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-2">
+                        <h4 class="chart-lbl">
+                            Students in Course
+                        </h4>
+                        <div class="divider">
+                        </div>
+                        <div class="content-center">
+                            <div class="pie-chart-container">
+                                <canvas class="pie-chart" id="pie">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-3">
+                        <h4 class="chart-lbl">
+                            Marks Analysis
+                        </h4>
+                        <div class="divider">
+                        </div>
+                        <div class="content-center">
+                            <div class="polar-chart-container">
+                                <canvas class="polar-chart" id="polar">
+                                </canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-4">
+                        <h4 class="chart-lbl">
+                            Data
+                        </h4>
+                        <div class="divider">
+                        </div>
+                        <div class="bubble-chart-container">
+                            <!-- <canvas class="bubble-chart" id="bubble">-->
+                            <div class="row">
+                                <div class="col">
+                                    <h4><b>Total no. of Students : 874</b></h4>
+                                    <h4><b>Total no. of Faculties : {{fac_count}}</b></h4>
+                                </div>
+                                <div class="col">
+                                    <h4><b>Exams : {{exam_count}}</b></h4>
+                                    <h4><b>Total Registrations : {{user_reg_count}}</b></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-5">
+                        <h4 class="chart-lbl">
+                            Exams Attempted
+                        </h4>
+                        <div class="divider">
+                        </div>
+                        <div class="bar-chart-container">
+                            <canvas class="bar-chart" id="bar">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="card-6">
+                        <h4 class="chart-lbl">
+                            Performance
+                        </h4>
+                        <div class="divider">
+                        </div>
+                        <div class="line-chart-container">
+                            <canvas class="line-chart" id="line">
+                            </canvas>
+                        </div>
+                    </div>
+                    <div class="card-7">
+                        <h4 class="chart-lbl">
+                            Exams Attempted
+                        </h4>
+                        <div class="divider">
+                        </div>
+                        <div class="mixed-chart-container">
+                            <canvas class="mixed-chart" id="mixed">
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+<script>
+   var config = {
+      type: 'bar',
+      data: {
+        datasets: [{
+          data: {{ data|safe }},
+          backgroundColor: [
+                'rgba(255, 99, 132, 4.2)',
+                'rgba(54, 162, 235, 4.2)',
+                'rgba(255, 206, 86, 4.2)',
+                'rgba(75, 192, 192, 4.2)',
+                'rgba(153, 102, 255, 4.2)',
+                'rgba(255, 159, 64, 4.2)'
+          ],
+          label: 'Exams Attempted'
+        }],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: false
+      }
+    };
+
+var config1 = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data1|safe }},
+          backgroundColor: [
+                'rgba(255, 99, 132, 7.2)',
+                'rgba(54, 162, 235, 3.2)',
+                'rgba(255, 206, 86, 2.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+          ],
+          label: 'No. of Students'
+        }],
+        labels: {{ labels1|safe }}
+      },
+      options: {
+        responsive: false
+      }
+    };
+window.onload = function() {
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var myChart = new Chart(ctx, config);
+
+      var ctx1 = document.getElementById('myChart1').getContext('2d');
+      var myChart1 = new Chart(ctx1, config1);
+
+    };
+
+
+</script>
+
+<script>
+    //bar chart
+var bar = document.getElementById('bar');
+bar.height = 400
+var barConfig = new Chart(bar, {
+    type: 'horizontalBar',
+    data: {
+        labels: {{labels|safe}},
+        datasets: [{
+            label: {{labels|safe}},
+            data: {{data|safe}},
+            backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(225, 50, 64, 1)', 'rgba(64, 159, 64, 1)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        },
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+    }
+})
+/*bubble chart
+var bubble = document.getElementById('bubble');
+bubble.height = 200
+var myBubbleChart = new Chart(bubble, {
+    type: 'bubble',
+    data: {
+        labels: ['data-1', 'data-2', 'data-3', 'data-4', 'data-5', 'data-6', 'data-7'],
+        datasets: [{
+            label: '# of data',
+            data: [{
+                x: 20,
+                y: 10,
+                r: 10
+            }, {
+                x: 15,
+                y: 5,
+                r: 13
+            }, {
+                x: 12,
+                y: 4,
+                r: 8
+            }, {
+                x: 17,
+                y: 2,
+                r: 10
+            }, {
+                x: 10,
+                y: 9,
+                r: 15
+            }, {
+                x: 8,
+                y: 8,
+                r: 12
+            }, {
+                x: 16,
+                y: 9,
+                r: 8
+            }],
+            backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(225, 50, 64, 1)', 'rgba(64, 159, 64, 1)', ]
+        }]
+    },
+    options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false,
+    }
+});
+*/
+//doughnut chart
+var doughnut = document.getElementById('doughnut');
+var doughnutConfig = new Chart(doughnut, {
+    type: 'doughnut',
+    data: {
+        labels: {{labels|safe}},
+        datasets: [{
+            label: {{labels|safe}},
+            data: {{data|safe}},
+            backgroundColor: ['rgba(0, 230, 118, 1)', 'rgba(255, 206, 86, 1)', 'rgba(255,99,132,1)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: true, // Add to prevent default behaviour of full-width/height
+    }
+});
+//line chart
+var line = document.getElementById('line');
+line.height = 200
+var lineConfig = new Chart(line, {
+    type: 'line',
+    data: {
+        labels: {{labels|safe}},
+        datasets: [{
+            label: '# of data', // Name the series
+            data: {{data|safe}}, // Specify the data values array
+            fill: false,
+            borderColor: '#2196f3', // Add custom color border (Line)
+            backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+            borderWidth: 1 // Specify bar border width
+        }]
+    },
+    options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+    }
+})
+//pie chart
+var pie = document.getElementById('pie');
+var pieConfig = new Chart(pie, {
+    type: 'pie',
+    data: {
+        labels: {{labels1|safe}},
+        datasets: [{
+            label: '# of data',
+            data: {{data1|safe}},
+            backgroundColor: ['rgba(103, 216, 239, 1)', 'rgba(246, 26, 104,1)','rgba(0, 230, 118, 1)', 'rgba(255, 206, 86, 1)', 'rgba(255,99,132,1)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: true, // Add to prevent default behaviour of full-width/height
+    }
+});
+//polar area chart
+var polar = document.getElementById('polar');
+var polarConfig = new Chart(polar, {
+    type: 'polarArea',
+    data: {
+        labels: {{labels|safe}},
+        datasets: [{
+            label: {{labels|safe}},
+            data: {{data|safe}},
+            backgroundColor: ['rgba(0, 230, 118, 1)', 'rgba(255, 206, 86, 1)', 'rgba(255,99,132,1)'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: true, // Add to prevent default behaviour of full-width/height
+    }
+});
+//mixed chart
+var mixed = document.getElementById('mixed');
+var mixedConfig = new Chart(mixed, {
+    type: 'bar',
+    data: {
+        labels: {{labels|safe}},
+        datasets: [{
+            label: {{labels|safe}},
+            data: {{data|safe}},
+            backgroundColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(225, 50, 64, 1)', 'rgba(64, 159, 64, 1)'],
+            borderWidth: 1
+        }, {
+            label: {{labels|safe}}, // Name the series
+            data: {{data|safe}},
+            type: 'line', // Specify the data values array
+            fill: false,
+            borderColor: '#2196f3', // Add custom color border (Line)
+            backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+            borderWidth: 1,
+            order: 2
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        },
+        responsive: true, // Instruct chart js to respond nicely.
+        maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
+    }
+})
+</script>
+
+
+
+{% endblock %}
